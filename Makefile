@@ -22,3 +22,6 @@ format:
 
 analysis:
 	pipenv run bandit ${PKG}/
+
+test:
+	pipenv run pytest -vv --cov-report=term-missing --cov=${PKG}/endpoints ${PKG}/tests
