@@ -33,7 +33,6 @@ jobs:
       run: |
         python3 -m pip install --upgrade pip
         pip3 install pipenv
-        redis-cli -h redis CONFIG SET requirepass "password"
         make init
     - name: Cache install package
       uses: actions/cache@v2
