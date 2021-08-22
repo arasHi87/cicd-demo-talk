@@ -25,3 +25,5 @@ analysis:
 
 test:
 	pipenv run pytest -vv --cov-report=term-missing --cov=${PKG}/endpoints ${PKG}/tests
+
+ci-bundle: analysis format lint test
