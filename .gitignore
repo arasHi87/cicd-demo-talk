@@ -1,0 +1,10 @@
+.DS_Store
+.env
+*.log
+*.swp
+.AppleDouble
+.LSOverride
+.vscode
+__pycache__
+.pytest_cache/
+.coverage
