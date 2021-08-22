@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  postgres:
+    image: "postgres:12"
+    restart: always
+    ports:
+      - "${PG_PORT}:5432"
+    volumes:
+      - ./sql/table.sql:/docker-entrypoint-initdb.d/table.sql
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=${PG_DBNAME}
+      - POSTGRES_USER=${PG_USERNAME}
+      - POSTGRES_PASSWORD=${PG_PASSWORD}
+
+volumes:
+  postgres_data:
+    name: postgres_data
