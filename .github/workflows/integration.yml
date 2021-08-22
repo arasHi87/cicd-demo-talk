@@ -1,0 +1,45 @@
+name: Integration
+
+on: push
+
+jobs:
+  integration:
+    runs-on: ubuntu-20.04
+    container: python:3.8.11
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_DB: m3ow87
+          POSTGRES_HOST_AUTH_METHOD: trust
+          POSTGRES_USER: m3ow87
+          POSTGRES_PASSWORD: m3ow87
+
+    steps:
+    - name: Install container dependencies
+      run: |
+        apt-get update
+        apt-get install -y make redis-tools postgresql-client software-properties-common gnupg2
+        add-apt-repository -y ppa:git-core/ppa
+        apt-get install -y git
+    - name: Repository checkout
+      uses: actions/checkout@v2
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Install service dependencies
+      run: |
+        python3 -m pip install --upgrade pip
+        pip3 install pipenv
+        redis-cli -h redis CONFIG SET requirepass "password"
+        make init
+    - name: Cache install package
+      uses: actions/cache@v2
+      with:
+        path: ~/.local/share/virtualenvs
+        key: ${{ runner.os }}-python-${{ steps.setup-python.outputs.python-version }}-pipenv-${{ hashFiles('Pipfile.lock') }}
+    - name: Run ci bundle command
+      run: |
+        make ci-bundle
